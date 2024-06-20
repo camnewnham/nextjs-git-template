@@ -1,32 +1,31 @@
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import React from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark as dark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import rehypeHighlight from "rehype-highlight";
+import rehypeSlug from "rehype-slug";
 
-import "./Article.css";
+// Import rehype themes
+//import "highlight.js/styles/github.css";
 
-export function Article({ content }: { content: string }) {
+import "./styles/article.css";
+
+export async function Article({
+  title,
+  content,
+}: {
+  content: string;
+  title: string;
+}) {
   return (
-    <Markdown
-      className={"markdown-body"}
-      remarkPlugins={[remarkGfm]}
-      components={{
-        code(props) {
-          const { children, className, node, ...rest } = props;
-          const match = /language-(\w+)/.exec(className || "");
-          return (
-            <SyntaxHighlighter
-              style={dark}
-              {...rest}
-              children={String(children).replace(/\n$/, "")}
-              language={match && match[1]}
-            />
-          );
-        },
-      }}
-    >
-      {content}
-    </Markdown>
+    <article>
+      <title>{title}</title>
+      <Markdown
+        className={"markdown-body"}
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeHighlight, rehypeSlug]}
+      >
+        {content}
+      </Markdown>
+    </article>
   );
 }

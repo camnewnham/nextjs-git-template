@@ -12,8 +12,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      <title>{title}</title>
-      <Article content={content} />
+      <Article content={content} title={title} />
     </>
   );
 }
