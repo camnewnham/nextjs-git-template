@@ -20,7 +20,7 @@ jobs:
     env:
       # UNDER_CONSTRUCTION: true # Sets the home page to a placeholder. All other pages still function.
       # CUSTOM_DOMAIN: true # Ensures basePath is not modified in the nextjs project. Only enable if you are using a custom github pages domain.
-      ARTICLES_PATH: gh_articles # A working folder path. Optional. Not required if this workflow exists in your articles directory.
+      ARTICLES_PATH: gha_articles # A working folder path. Optional. Not required if this workflow exists in your articles directory.
       TEMPLATE_REPO: camnewnham/nextjs-git-template # The directory containing the nextjs template.
       ARTICLES_REPO: camnewnham/nextjs-git-template # The source of the .md files. Defaults to the current directory.
     steps:          
