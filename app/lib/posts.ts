@@ -15,7 +15,7 @@ const files = fs.readdirSync(POSTS_DIRECTORY, {
   encoding: "utf-8",
 });
 
-export const articles = files
+export const posts = files
   .filter((file) => file.includes(".md"))
   .map((file) => {
     // Use git to get the last modified date of the file
