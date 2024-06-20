@@ -22,20 +22,19 @@ jobs:
       # ARTICLES_REPO: camnewnham/nextjs-git-template # The source of the .md files. Defaults to the current repository.
       # CUSTOM_DOMAIN: true # Ensures basePath is not modified in the nextjs project. Only enable if you are using a custom github pages domain.
       # UNDER_CONSTRUCTION: true # Sets the home page to a placeholder. All other pages still function.
-    steps:      
-
-      - name: Set Defaults Articles Path
-        if: ${{ !env.ARTICLES_PATH }}
-        run: echo "ARTICLES_PATH=gha_articles">>$GITHUB_ENV
-
+    steps:
       - name: Set Default Template Repository
         if: ${{ !env.TEMPLATE_REPO }}
         run: echo "TEMPLATE_REPO=${{ env.GITHUB_REPOSITORY }}">>$GITHUB_ENV
-    
+
       - name: Set Default Articles Repository
         if: ${{ !env.ARTICLES_REPO }}
         run: echo "ARTICLES_REPO=${{ env.GITHUB_REPOSITORY }}">>$GITHUB_ENV
-        
+
+      - name: Set Defaults Articles Working Folder
+        if: ${{ !env.ARTICLES_PATH }}
+        run: echo "ARTICLES_PATH=.articles">>$GITHUB_ENV
+
       - name: Checkout Template
         uses: actions/checkout@v4
         with:
@@ -43,11 +42,11 @@ jobs:
 
       - name: Checkout Articles
         uses: actions/checkout@v4
-        with: 
+        with:
           repository: ${{ env.ARTICLES_REPO }}
           fetch-depth: 0
           path: ${{ env.ARTICLES_PATH }}
-        
+
       - name: Detect package manager
         id: detect-package-manager
         run: |
