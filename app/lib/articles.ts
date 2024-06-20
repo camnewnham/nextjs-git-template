@@ -2,15 +2,15 @@ import fs from "fs";
 import child_process from "child_process";
 import path from "path";
 
-const ARTICLES_PATH = process.env.ARTICLES_PATH ?? ".articles";
+const POSTS_DIRECTORY = process.env.POSTS_DIRECTORY ?? ".articles";
 
-if (!process.env.ARTICLES_PATH) {
-  console.warn("Using default articles path: " + ARTICLES_PATH);
+if (!process.env.POSTS_DIRECTORY) {
+  console.warn("Using default articles path: " + POSTS_DIRECTORY);
 }
 
 export const ArticlesPerPage = 5;
 
-const files = fs.readdirSync(ARTICLES_PATH, {
+const files = fs.readdirSync(POSTS_DIRECTORY, {
   recursive: true,
   encoding: "utf-8",
 });
@@ -19,7 +19,7 @@ export const articles = files
   .filter((file) => file.includes(".md"))
   .map((file) => {
     // Use git to get the last modified date of the file
-    const path = `${ARTICLES_PATH}/${file}`;
+    const path = `${POSTS_DIRECTORY}/${file}`;
 
     const { content, frontmatter } = parseFrontmatter(path);
 
