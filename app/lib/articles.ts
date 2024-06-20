@@ -21,7 +21,7 @@ export const articles = files
 
     const { content, frontmatter } = parseFrontmatter(path);
 
-    const slug = file.replace(/.md$/, "").replace(/[\s\\]/g, "-");
+    const slug = file.replace(/.md$/, "").replace(/[\s\/]/g, "-");
 
     // Extract the first h1 from the markdown
     const title = content.match(/^#\s(.*)$/m)?.[1] || frontmatter.title;
