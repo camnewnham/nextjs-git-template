@@ -17,7 +17,7 @@ export const articles = files
   .filter((file) => file.includes(".md"))
   .map((file) => {
     // Use git to get the last modified date of the file
-    const path = `${ARTICLES_PATH}\\${file}`;
+    const path = `${ARTICLES_PATH}/${file}`;
 
     const { content, frontmatter } = parseFrontmatter(path);
 
