@@ -1,3 +1,5 @@
+[![Deploy to GitHub Pages](https://github.com/camnewnham/nextjs-git-template/actions/workflows/nextjs.yml/badge.svg)](https://github.com/camnewnham/nextjs-git-template/actions/workflows/nextjs.yml)
+
 ## What is this?
 
 A template that allows you to create a repository of Markdown (.md) files, and turn them into a static site. 
