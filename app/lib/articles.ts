@@ -1,5 +1,6 @@
 import fs from "fs";
 import child_process from "child_process";
+import path from "path";
 
 const ARTICLES_PATH = process.env.ARTICLES_PATH;
 
@@ -56,8 +57,14 @@ function getModifications(file: string) {
   };
 }
 
-function parseFrontmatter(path: string) {
-  const raw = fs.readFileSync(path, "utf-8");
+function parseFrontmatter(filePath: string) {
+  const resolvedPath = path.resolve(filePath);
+
+  if (!fs.existsSync(resolvedPath)) {
+    throw new Error(`File not found at \"${resolvedPath}\"`);
+  }
+
+  const raw = fs.readFileSync(resolvedPath, "utf-8");
 
   if (raw.startsWith("---")) {
     const [frontmatter, content] = raw
