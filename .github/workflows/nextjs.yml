@@ -18,25 +18,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # UNDER_CONSTRUCTION: true # Sets the home page to a placeholder. All other pages still function.
-      # CUSTOM_DOMAIN: true # Ensures basePath is not modified in the nextjs project. Only enable if you are using a custom github pages domain.
-      # ARTICLES_PATH: gha_articles # A working folder path. Optional. Not required if this workflow exists in your articles directory.
       TEMPLATE_REPO: camnewnham/nextjs-git-template # The directory containing the nextjs template.
-      ARTICLES_REPO: camnewnham/nextjs-git-template # The source of the .md files. Defaults to the current directory.
-    steps:          
+      # ARTICLES_REPO: camnewnham/nextjs-git-template # The source of the .md files. Defaults to the current repository.
+      # CUSTOM_DOMAIN: true # Ensures basePath is not modified in the nextjs project. Only enable if you are using a custom github pages domain.
+      # UNDER_CONSTRUCTION: true # Sets the home page to a placeholder. All other pages still function.
+    steps:      
+
+      - name: Set Defaults Articles Path
+        if: ${{ !env.ARTICLES_PATH }}
+        run: echo "ARTICLES_PATH=gha_articles">>$GITHUB_ENV
+
+      - name: Set Default Template Repository
+        if: ${{ !env.TEMPLATE_REPO }}
+        run: echo "TEMPLATE_REPO=${{ env.GITHUB_REPOSITORY }}">>$GITHUB_ENV
+    
+      - name: Set Default Articles Repository
+        if: ${{ !env.ARTICLES_REPO }}
+        run: echo "ARTICLES_REPO=${{ env.GITHUB_REPOSITORY }}">>$GITHUB_ENV
+        
       - name: Checkout Template
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.TEMPLATE_REPO || env.GITHUB_REPOSITORY }}
-
-      - name: Set Default Articles Directory
-        if: ${{ !env.ARTICLES_PATH }}
-        run: echo "ARTICLES_PATH=gha_articles">>$GITHUB_ENV
+          repository: ${{ env.TEMPLATE_REPO }}
 
       - name: Checkout Articles
         uses: actions/checkout@v4
         with: 
-          repository: ${{ env.ARTICLES_REPO || env.GITHUB_REPOSITORY  }}
+          repository: ${{ env.ARTICLES_REPO }}
           fetch-depth: 0
           path: ${{ env.ARTICLES_PATH }}
         
