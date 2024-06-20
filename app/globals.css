@@ -9,6 +9,9 @@
   ul {
     list-style-type: disc;
   }
+  ol {
+    list-style-type: auto;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
