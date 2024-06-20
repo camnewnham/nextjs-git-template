@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Fragment } from "react";
 
-export default function Pagination({
+export function Pagination({
   current,
   last,
   baseUrl,

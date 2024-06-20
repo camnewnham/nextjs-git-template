@@ -26,3 +26,10 @@ Version control is a system that allows developers to track changes to their cod
 Version control is an essential tool for any software development team. It provides a structured and efficient way to manage code changes and collaborate effectively.
 
 Stay tuned for more blog posts on various software development topics!
+
+```csharp
+public string test() {
+    return "true";
+}
+
+```

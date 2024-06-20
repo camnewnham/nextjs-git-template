@@ -1,12 +1,9 @@
-import Pagination from "@/app/components/Pagination";
-import { articles } from "@/app/lib/articles";
-import Link from "next/link";
-
-const PAGINATION = 5;
+import { articles, ArticlesPerPage } from "@/app/lib/articles";
+import { PaginatedArticles } from "./ArticlesList";
 
 // Return a list of `params` to populate the [slug] dynamic segment
 export function generateStaticParams() {
-  const pages = Math.ceil(articles.length / PAGINATION);
+  const pages = Math.ceil(articles.length / ArticlesPerPage);
   return Array.from({ length: pages }).map((_, index) => ({
     pagination: (index + 1).toString(),
   }));
@@ -18,27 +15,6 @@ export default function Page({ params }: { params: { pagination: string } }) {
   const { pagination } = params;
 
   const pageNumber = parseInt(pagination);
-  const totalPages = Math.ceil(articles.length / PAGINATION);
 
-  // Get the articles that should be displayed on this page
-  const pageArticles = articles.slice(
-    (pageNumber - 1) * PAGINATION,
-    pageNumber * PAGINATION
-  );
-
-  return (
-    <>
-      <div>Page {pageNumber}</div>
-      <ul>
-        {pageArticles.map((article) => (
-          <li key={article.slug}>
-            <Link href={`/articles/${article.slug}`}>{article.title}</Link>
-          </li>
-        ))}
-      </ul>
-      <div>
-        {<Pagination current={pageNumber} last={totalPages} baseUrl="/list/" />}
-      </div>
-    </>
-  );
+  return <PaginatedArticles pageNumber={pageNumber} />;
 }
