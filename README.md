@@ -22,14 +22,8 @@ Preview is available here: https://camnewnham.github.io/nextjs-git-template/
 
 Your files will automatically deploy!
 
-### Development
+## Development
 1. Pull this repo
 2. Run `npm i`
 3. Use `npm run dev` for initial testing
 4. Use `npm run build && npm run serve` to test static export.
-
-### Other ideas
-- Sort by git commit timestamps (+ render)
-- Link to raw markdown in source repo
-- Support github discussions for comments
-- Provide an option to use a sidebar (i.e. docs) instead of a list (i.e. blog)
