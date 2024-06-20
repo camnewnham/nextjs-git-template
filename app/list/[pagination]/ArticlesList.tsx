@@ -1,5 +1,5 @@
 import { articles, ArticlesPerPage } from "@/app/lib/articles";
-import { Pagination } from "@/app/components/Pagination";
+import { Pagination } from "./Pagination";
 import Link from "next/link";
 import React from "react";
 
@@ -14,7 +14,6 @@ export function PaginatedArticles({ pageNumber }: { pageNumber: number }) {
 
   return (
     <>
-      <div>Page {pageNumber}</div>
       <ul>
         {pageArticles.map((article) => (
           <li key={article.slug}>

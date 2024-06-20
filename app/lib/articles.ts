@@ -2,10 +2,10 @@ import fs from "fs";
 import child_process from "child_process";
 import path from "path";
 
-const ARTICLES_PATH = process.env.ARTICLES_PATH;
+const ARTICLES_PATH = process.env.ARTICLES_PATH ?? ".articles";
 
-if (!ARTICLES_PATH) {
-  throw new Error("ARTICLES_PATH is not defined");
+if (!process.env.ARTICLES_PATH) {
+  console.warn("Using default articles path: " + ARTICLES_PATH);
 }
 
 export const ArticlesPerPage = 5;
