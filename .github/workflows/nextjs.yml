@@ -25,8 +25,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build job
   build:
+    env:
+      ARTICLES_PATH: test_articles
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
