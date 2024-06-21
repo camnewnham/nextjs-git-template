@@ -25,7 +25,7 @@ function TocItem({ item }: { item: TocElement }) {
         setInView(entry.isIntersecting);
       },
       {
-        rootMargin: "0px 0px 90% 0px",
+        rootMargin: "0px 0px 0px 0px",
       }
     );
     observer.observe(document.getElementById(id)!);
