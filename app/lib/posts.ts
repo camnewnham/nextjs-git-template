@@ -50,10 +50,6 @@ const getPostsPromise = Promise.all(
       // Use git to get the last modified date of the file
       const filePath = path.resolve(POSTS_DIRECTORY, file);
 
-      if (!fs.existsSync(filePath)) {
-        throw new Error(`File not found at \"${filePath}\"`);
-      }
-
       const slug = file.replace(/.md$/, "").replace(/[\s\/\\]/g, "-");
 
       const raw = fs.readFileSync(filePath, "utf-8");
