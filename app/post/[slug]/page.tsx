@@ -1,4 +1,4 @@
-import { getPosts } from "@/app/lib/posts";
+import { Post, getPosts } from "@/app/lib/posts";
 import "./styles/post.css";
 import Link from "next/link";
 
@@ -7,28 +7,36 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const { title, children, created_at, updated_at, file } = (
-    await getPosts()
-  ).find((post) => post.slug === params.slug)!;
+  const post = (await getPosts()).find((post) => post.slug === params.slug)!;
+
+  const { title, children } = post;
 
   return (
     <>
       <title>{title}</title>
-      <div className="text-xs text-muted w-full text-right">
-        <Link
-          href={
-            process.env.GIT_REF
-              ? `https://github.com/${process.env.POSTS_REPO}/commits/${
-                  process.env.GIT_REF ?? "main"
-                }/${file}`
-              : "#"
-          }
-        >
-          📅 {created_at.toDateString()}
-          {created_at != updated_at && "*"}
-        </Link>
+      <div className="flex flex-col-reverse md:flex-row space-x-4">
+        <div id="spacer" className="w-[250px] flex-shrink-0 hidden xl:block" />
+        <article className="markdown-body max-w-full xl:max-w-[750px]">
+          {children}
+        </article>
+        <PostInfoPanel post={post} />
       </div>
-      <article className="markdown-body">{children}</article>
     </>
+  );
+}
+
+function PostInfoPanel({ post }: { post: Post }) {
+  const { created_at, updated_at, gitHistoryUrl } = post;
+  return (
+    <aside className="bg-red w-[250px] flex-shrink-0">
+      <div className="text-xs text-muted w-full flex flex-col space-y-2">
+        <span>📅 Published {created_at.toDateString()}</span>
+        {updated_at != created_at && (
+          <Link href={gitHistoryUrl}>
+            🔗 Edited {updated_at.toDateString()}
+          </Link>
+        )}
+      </div>
+    </aside>
   );
 }

@@ -20,9 +20,7 @@ export default function RootLayout({
         className={`${inter.className} flex flex-col items-center bg-default text-default min-h-screen`}
       >
         <Header />
-        <div id="main" className={`w-full max-w-[800px] p-4 sm:p-8`}>
-          {children}
-        </div>
+        <div id="main">{children}</div>
       </body>
     </html>
   );

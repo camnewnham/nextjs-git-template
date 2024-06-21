@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "hast-util-excerpt": "^2.0.0",
+    "hast-util-heading-rank": "^3.0.0",
+    "hast-util-to-string": "^3.0.0",
     "hastscript": "^9.0.0",
     "ms": "^2.1.3",
     "next": "14.2.4",

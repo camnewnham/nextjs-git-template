@@ -13,6 +13,8 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkParseFrontmatter from "remark-parse-frontmatter";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { h } from "hastscript";
+import GithubSlugger from "github-slugger";
+import rehypeToc, { TocElement } from "./rehypeToc";
 
 export const PostsPerPage = process.env.POSTS_PER_PAGE
   ? parseInt(process.env.POSTS_PER_PAGE)
@@ -32,9 +34,15 @@ export type Post = {
   created_at: Date;
   updated_at: Date;
   wordCount: number;
+  gitHistoryUrl: string;
+  headings: TocElement[];
 };
 
 const POSTS_DIRECTORY = process.env.POSTS_DIRECTORY ?? ".posts";
+const GIT_BRANCH = child_process
+  .execSync(`cd ${POSTS_DIRECTORY} && git rev-parse --abbrev-ref HEAD`)
+  .toString()
+  .trim();
 
 if (!process.env.POSTS_DIRECTORY) {
   console.warn("Using default posts path: " + POSTS_DIRECTORY);
@@ -70,12 +78,14 @@ const getPostsPromise = Promise.all(
 
       return {
         file: relativePath,
+        gitHistoryUrl: `https://github.com/${process.env.POSTS_REPO}/commits/${GIT_BRANCH}/${relativePath}`,
         title,
         slug,
         index,
         children: processed.result,
         wordCount: raw.trim().split(/\s+/).length,
         description: processed.data.meta?.description ?? "No description.",
+        headings: (processed.data.headings ?? []) as TocElement[],
         ...getGitProperties(filePath),
       } satisfies Post;
     })
@@ -120,6 +130,7 @@ async function processMarkdown(content: string) {
     .use(rehypeHighlight)
     .use(remarkGfm)
     .use(rehypeSlug)
+    .use(rehypeToc)
     .use(rehypeAutolinkHeadings, {
       behavior: "wrap",
       properties: {
