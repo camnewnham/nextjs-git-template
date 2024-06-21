@@ -11,6 +11,8 @@ import rehypeReact from "rehype-react";
 import rehypeInferDescriptionMeta from "rehype-infer-description-meta";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkParseFrontmatter from "remark-parse-frontmatter";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import { h } from "hastscript";
 
 export const PostsPerPage = process.env.POSTS_PER_PAGE
   ? parseInt(process.env.POSTS_PER_PAGE)
@@ -60,7 +62,6 @@ const getPostsPromise = Promise.all(
         //@ts-ignore
         processed.data.frontmatter?.title || // Frontmatter
         raw.match(/^#\s(.*)$/m)?.[1] || // First h1
-        raw.match(/^##\s(.*)$/m)?.[1] || // First h2
         file.replace(/.md$/, ""); // File name
 
       return {
@@ -111,9 +112,19 @@ async function processMarkdown(content: string) {
       truncateSize: 240,
       ignoreSelector: "h1, h2, h3, style, script, noscript, template",
     })
-    .use(rehypeSlug)
     .use(rehypeHighlight)
     .use(remarkGfm)
+    .use(rehypeSlug)
+    .use(rehypeAutolinkHeadings, {
+      behavior: "wrap",
+      properties: {
+        class: "anchor-heading",
+      },
+      content: (element) => [
+        h(".anchor-link", `🔗`),
+        h(".anchor-title", element.children),
+      ],
+    })
     .use(rehypeReact, require("react/jsx-runtime"))
     .process(content);
 }
