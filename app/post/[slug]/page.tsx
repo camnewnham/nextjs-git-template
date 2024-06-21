@@ -1,6 +1,7 @@
 import { Post, getPosts } from "@/app/lib/posts";
 import "./styles/post.css";
 import Link from "next/link";
+import { TableOfContents } from "./TableOfContents";
 
 export async function generateStaticParams() {
   return (await getPosts()).map((post) => ({ slug: post.slug }));
@@ -28,9 +29,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
 function PostInfoPanel({ post }: { post: Post }) {
   const { created_at, updated_at, gitHistoryUrl } = post;
   return (
-    <aside className="bg-red w-[250px] flex-shrink-0">
+    <aside className="w-[250px] flex-shrink-0 space-y-4">
       <div className="text-xs text-muted w-full flex flex-col space-y-2">
-        <span>🕓 {Math.ceil(post.wordCount / 200)} minute read.</span>
+        <span>🕓 {Math.ceil(post.wordCount / 200)} minute read</span>
         <span>📅 Published {created_at.toDateString()}</span>
         {updated_at != created_at && (
           <Link href={gitHistoryUrl}>
@@ -38,6 +39,7 @@ function PostInfoPanel({ post }: { post: Post }) {
           </Link>
         )}
       </div>
+      <TableOfContents headings={post.headings} />
     </aside>
   );
 }

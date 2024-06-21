@@ -13,7 +13,6 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkParseFrontmatter from "remark-parse-frontmatter";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { h } from "hastscript";
-import GithubSlugger from "github-slugger";
 import rehypeToc, { TocElement } from "./rehypeToc";
 
 export const PostsPerPage = process.env.POSTS_PER_PAGE

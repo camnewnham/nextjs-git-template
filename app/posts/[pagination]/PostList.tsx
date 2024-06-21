@@ -33,10 +33,12 @@ function Exerpt({ post }: { post: Post }) {
     <div className="bg-default hover:bg-muted last:rounded-b-lg first:rounded-t-lg">
       <Link href={`/post/${post.slug}`}>
         <div className="p-4 pt-8 pb-8">
-          <h1 className="text-xl font-bold mb-1">{post.title}</h1>
-          <div className="text-xs text-muted mb-2 mt">
-            🕓 {Math.ceil(post.wordCount / 200)} minute read. Created{" "}
-            <Age date={post.created_at} /> ago.
+          <h1 className="text-xl font-bold mb-2">{post.title}</h1>
+          <div className="text-xs text-muted mb-2 space-y-1 flex flex-col">
+            <span>
+              📅 Published <Age date={post.created_at} long /> ago
+            </span>
+            <span>🕓 {Math.ceil(post.wordCount / 200)} minute read </span>
           </div>
           <div className="text-sm text-muted">{post.description}</div>
         </div>
