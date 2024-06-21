@@ -24,7 +24,6 @@ export async function getPosts() {
 
 export type Post = {
   file: string;
-  path: string;
   title: string;
   slug: string;
   index: number;
@@ -64,9 +63,13 @@ const getPostsPromise = Promise.all(
         raw.match(/^#\s(.*)$/m)?.[1] || // First h1
         file.replace(/.md$/, ""); // File name
 
+      const relativePath =
+        process.env.NODE_ENV === "development"
+          ? path.join(POSTS_DIRECTORY, file)
+          : file;
+
       return {
-        file,
-        path: path.join(POSTS_DIRECTORY, file),
+        file: relativePath,
         title,
         slug,
         index,

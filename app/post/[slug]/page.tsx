@@ -7,7 +7,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const { title, children, created_at, updated_at, path } = (
+  const { title, children, created_at, updated_at, file } = (
     await getPosts()
   ).find((post) => post.slug === params.slug)!;
 
@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             process.env.GIT_REF
               ? `https://github.com/${process.env.POSTS_REPO}/commits/${
                   process.env.GIT_REF ?? "main"
-                }/${path}`
+                }/${file}`
               : "#"
           }
         >
