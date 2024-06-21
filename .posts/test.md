@@ -34,5 +34,4 @@ Stay tuned for more blog posts on various software development topics!
 public string test() {
     return "true";
 }
-
 ```

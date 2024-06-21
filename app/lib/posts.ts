@@ -22,6 +22,7 @@ export async function getPosts() {
 
 export type Post = {
   file: string;
+  path: string;
   title: string;
   slug: string;
   index: number;
@@ -64,6 +65,7 @@ const getPostsPromise = Promise.all(
 
       return {
         file,
+        path: path.join(POSTS_DIRECTORY, file),
         title,
         slug,
         index,
@@ -73,6 +75,8 @@ const getPostsPromise = Promise.all(
         ...getGitProperties(filePath),
       } satisfies Post;
     })
+).then((posts) =>
+  posts.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())
 );
 
 function getGitProperties(file: string) {
@@ -92,8 +96,8 @@ function getGitProperties(file: string) {
   }
 
   return {
-    created_at: new Date(dates[0]),
-    updated_at: new Date(dates[dates.length - 1]),
+    created_at: new Date(dates[dates.length - 1]),
+    updated_at: new Date(dates[0]),
   };
 }
 

@@ -2,6 +2,7 @@ import { getPosts, Post, PostsPerPage } from "@/app/lib/posts";
 import { Pagination } from "./Pagination";
 import Link from "next/link";
 import React from "react";
+import { Age } from "./Age";
 
 export async function PaginatedPosts({ pageNumber }: { pageNumber: number }) {
   const posts = await getPosts();
@@ -29,13 +30,16 @@ export async function PaginatedPosts({ pageNumber }: { pageNumber: number }) {
 
 function Exerpt({ post }: { post: Post }) {
   return (
-    <div className="bg-default p-4 pt-8 pb-8 hover:bg-muted last:rounded-b-lg first:rounded-t-lg">
+    <div className="bg-default hover:bg-muted last:rounded-b-lg first:rounded-t-lg">
       <Link href={`/post/${post.slug}`}>
-        <h1 className="text-xl font-bold">{post.title}</h1>
-        <div className="text-xs text-muted mb-2">
-          🕓 {Math.ceil(post.wordCount / 200)} minute read
+        <div className="p-4 pt-8 pb-8">
+          <h1 className="text-xl font-bold mb-1">{post.title}</h1>
+          <div className="text-xs text-muted mb-2 mt">
+            🕓 {Math.ceil(post.wordCount / 200)} minute read. Created{" "}
+            <Age date={post.created_at} /> ago.
+          </div>
+          <div className="text-sm text-muted">{post.description}</div>
         </div>
-        <div className="text-sm text-muted">{post.description}</div>
       </Link>
     </div>
   );
