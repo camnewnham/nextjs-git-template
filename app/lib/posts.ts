@@ -48,11 +48,15 @@ const getPostsPromise = Promise.all(
     .filter((file) => file.includes(".md"))
     .map(async (file, index) => {
       // Use git to get the last modified date of the file
-      const path = `${POSTS_DIRECTORY}/${file}`;
+      const filePath = path.resolve(POSTS_DIRECTORY, file);
+
+      if (!fs.existsSync(filePath)) {
+        throw new Error(`File not found at \"${filePath}\"`);
+      }
 
       const slug = file.replace(/.md$/, "").replace(/[\s\/\\]/g, "-");
 
-      const raw = fs.readFileSync(path, "utf-8");
+      const raw = fs.readFileSync(filePath, "utf-8");
       const processed = await processMarkdown(raw);
 
       const title =
@@ -70,7 +74,7 @@ const getPostsPromise = Promise.all(
         children: processed.result,
         wordCount: raw.trim().split(/\s+/).length,
         description: processed.data.meta?.description ?? "No description.",
-        ...getGitProperties(path),
+        ...getGitProperties(filePath),
       } satisfies Post;
     })
 );
