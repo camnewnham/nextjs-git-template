@@ -61,7 +61,7 @@ const getPostsPromise = Promise.all(
 
       const title =
         //@ts-ignore
-        processed.data.frontmatter.title || // Frontmatter
+        processed.data.frontmatter?.title || // Frontmatter
         raw.match(/^#\s(.*)$/m)?.[1] || // First h1
         raw.match(/^##\s(.*)$/m)?.[1] || // First h2
         file.replace(/.md$/, ""); // File name
