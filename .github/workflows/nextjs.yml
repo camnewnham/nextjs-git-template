@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SITE_TITLE: NextJS GitHub Pages Template
+      SITE_TITLE: NextJS + GitHub Pages
       TEMPLATE_REPO: camnewnham/nextjs-git-template # The directory containing the nextjs template.
       # POSTS_REPO: camnewnham/nextjs-git-template # The source of the .md files. Defaults to the current repository.
       # CUSTOM_DOMAIN: true # Ensures basePath is not modified in the nextjs project. Only enable if you are using a custom github pages domain.
@@ -26,15 +26,19 @@ jobs:
     steps:
       - name: Set Default Template Repository
         if: ${{ !env.TEMPLATE_REPO }}
-        run: echo "TEMPLATE_REPO=${{ env.GITHUB_REPOSITORY }}">>$GITHUB_ENV
+        run: echo "TEMPLATE_REPO=${{ github.repository }}">>$GITHUB_ENV
 
       - name: Set Default Posts Repository
         if: ${{ !env.POSTS_REPO }}
-        run: echo "POSTS_REPO=${{ env.GITHUB_REPOSITORY }}">>$GITHUB_ENV
+        run: echo "POSTS_REPO=${{ github.repository }}">>$GITHUB_ENV
 
-      - name: Set Defaults Posts Working Folder
+      - name: Set Default Posts Working Folder
         if: ${{ !env.POSTS_DIRECTORY }}
         run: echo "POSTS_DIRECTORY=.posts">>$GITHUB_ENV
+        
+      - name: Set Default GitHub Ref
+        if: ${{ !env.GIT_REF }}
+        run: echo "GIT_REF=${{ github.ref_name }}">>$GITHUB_ENV
 
       - name: Checkout Template
         uses: actions/checkout@v4
