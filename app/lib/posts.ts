@@ -85,7 +85,9 @@ const getPostsPromise = Promise.all(
 
 function getGitProperties(file: string) {
   const stdout = child_process
-    .execSync(`git log --follow --format=%ad --date default \"${file}\"`)
+    .execSync(
+      `cd ${POSTS_DIRECTORY} && git log --follow --format=%ad --date default \"${file}\"`
+    )
     .toString();
 
   const dates = stdout.split("\n").filter((x: any) => x);
