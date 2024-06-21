@@ -2,43 +2,58 @@ import fs from "fs";
 import child_process from "child_process";
 import path from "path";
 
-const POSTS_DIRECTORY = process.env.POSTS_DIRECTORY ?? ".articles";
+export const PostsPerPage = 5;
 
-if (!process.env.POSTS_DIRECTORY) {
-  console.warn("Using default articles path: " + POSTS_DIRECTORY);
+export type Post = {
+  file: string;
+  title: string;
+  slug: string;
+  content: string;
+  created_at: Date;
+  updated_at: Date;
+};
+
+export async function getPosts() {
+  return await getPostsPromise;
 }
 
-export const ArticlesPerPage = 5;
+const POSTS_DIRECTORY = process.env.POSTS_DIRECTORY ?? ".posts";
+
+if (!process.env.POSTS_DIRECTORY) {
+  console.warn("Using default posts path: " + POSTS_DIRECTORY);
+}
 
 const files = fs.readdirSync(POSTS_DIRECTORY, {
   recursive: true,
   encoding: "utf-8",
 });
 
-export const posts = files
-  .filter((file) => file.includes(".md"))
-  .map((file) => {
-    // Use git to get the last modified date of the file
-    const path = `${POSTS_DIRECTORY}/${file}`;
+const getPostsPromise = Promise.all(
+  files
+    .filter((file) => file.includes(".md"))
+    .map(async (file) => {
+      // Use git to get the last modified date of the file
+      const path = `${POSTS_DIRECTORY}/${file}`;
 
-    const { content, frontmatter } = parseFrontmatter(path);
+      const { content, frontmatter } = parseFrontmatter(path);
 
-    const slug = file.replace(/.md$/, "").replace(/[\s\/\\]/g, "-");
+      const slug = file.replace(/.md$/, "").replace(/[\s\/\\]/g, "-");
 
-    // Extract the first h1 from the markdown
-    const title =
-      content.match(/^#\s(.*)$/m)?.[1] ||
-      frontmatter.title ||
-      file.replace(/.md$/, "");
+      // Extract the first h1 from the markdown
+      const title =
+        frontmatter.title ||
+        content.match(/^#\s(.*)$/m)?.[1] ||
+        file.replace(/.md$/, "");
 
-    return {
-      file,
-      title,
-      slug,
-      content,
-      ...getModifications(path),
-    };
-  });
+      return {
+        file,
+        title,
+        slug,
+        content,
+        ...getModifications(path),
+      } satisfies Post;
+    })
+);
 
 function getModifications(file: string) {
   const stdout = child_process

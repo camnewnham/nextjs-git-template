@@ -1,9 +1,9 @@
-import { PaginatedArticles } from "./list/[pagination]/ArticlesList";
+import { PaginatedPosts } from "./posts/[pagination]/PostList";
 
 export default function Home() {
   if (process.env.UNDER_CONSTRUCTION) {
     return <div>Under Construction...</div>;
   }
 
-  return <PaginatedArticles pageNumber={1} />;
+  return <PaginatedPosts pageNumber={1} />;
 }

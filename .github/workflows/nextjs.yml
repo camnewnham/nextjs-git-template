@@ -27,11 +27,11 @@ jobs:
         if: ${{ !env.TEMPLATE_REPO }}
         run: echo "TEMPLATE_REPO=${{ env.GITHUB_REPOSITORY }}">>$GITHUB_ENV
 
-      - name: Set Default Articles Repository
+      - name: Set Default Posts Repository
         if: ${{ !env.POSTS_REPO }}
         run: echo "POSTS_REPO=${{ env.GITHUB_REPOSITORY }}">>$GITHUB_ENV
 
-      - name: Set Defaults Articles Working Folder
+      - name: Set Defaults Posts Working Folder
         if: ${{ !env.POSTS_DIRECTORY }}
         run: echo "POSTS_DIRECTORY=.posts">>$GITHUB_ENV
 

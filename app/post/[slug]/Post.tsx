@@ -7,9 +7,9 @@ import { unified } from "unified";
 import remarkRehype from "remark-rehype";
 import rehypeReact from "rehype-react";
 
-import "./styles/article.css";
+import "./styles/post.css";
 
-export async function Article({
+export async function Post({
   title,
   content,
 }: {

@@ -1,20 +1,19 @@
-import { articles, ArticlesPerPage } from "@/app/lib/articles";
-import { PaginatedArticles } from "./ArticlesList";
+import { PostsPerPage, getPosts } from "@/app/lib/posts";
+import { PaginatedPosts } from "./PostList";
 
-// Return a list of `params` to populate the [slug] dynamic segment
-export function generateStaticParams() {
-  const pages = Math.ceil(articles.length / ArticlesPerPage);
+export async function generateStaticParams() {
+  const pages = Math.ceil((await getPosts()).length / PostsPerPage);
   return Array.from({ length: pages }).map((_, index) => ({
     pagination: (index + 1).toString(),
   }));
 }
 
-// Multiple versions of this page will be statically generated
-// using the `params` returned by `generateStaticParams`
-export default function Page({ params }: { params: { pagination: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: { pagination: string };
+}) {
   const { pagination } = params;
-
   const pageNumber = parseInt(pagination);
-
-  return <PaginatedArticles pageNumber={pageNumber} />;
+  return <PaginatedPosts pageNumber={pageNumber} />;
 }

@@ -1,18 +1,14 @@
-import { articles } from "@/app/lib/articles";
-import { Article } from "./Article";
+import { Post } from "./Post";
+import { getPosts } from "@/app/lib/posts";
 
-export function generateStaticParams() {
-  return articles.map((article) => ({ slug: article.slug }));
+export async function generateStaticParams() {
+  return (await getPosts()).map((post) => ({ slug: post.slug }));
 }
 
-export default function Page({ params }: { params: { slug: string } }) {
-  const { title, content } = articles.find(
-    (article) => article.slug === params.slug
+export default async function Page({ params }: { params: { slug: string } }) {
+  const { title, content } = (await getPosts()).find(
+    (post) => post.slug === params.slug
   )!;
 
-  return (
-    <>
-      <Article content={content} title={title} />
-    </>
-  );
+  return <Post content={content} title={title} />;
 }
