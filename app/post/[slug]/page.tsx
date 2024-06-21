@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   return (
     <>
       <title>{title}</title>
-      <div className="flex flex-col-reverse md:flex-row space-x-4">
+      <div className="flex flex-col-reverse md:flex-row space-x-8">
         <div id="spacer" className="w-[250px] flex-shrink-0 hidden xl:block" />
         <article className="markdown-body max-w-full xl:max-w-[750px]">
           {children}
@@ -30,6 +30,7 @@ function PostInfoPanel({ post }: { post: Post }) {
   return (
     <aside className="bg-red w-[250px] flex-shrink-0">
       <div className="text-xs text-muted w-full flex flex-col space-y-2">
+        <span>🕓 {Math.ceil(post.wordCount / 200)} minute read.</span>
         <span>📅 Published {created_at.toDateString()}</span>
         {updated_at != created_at && (
           <Link href={gitHistoryUrl}>
