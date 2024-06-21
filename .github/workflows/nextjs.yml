@@ -18,6 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      SITE_TITLE: NextJS GitHub Pages Template
       TEMPLATE_REPO: camnewnham/nextjs-git-template # The directory containing the nextjs template.
       # POSTS_REPO: camnewnham/nextjs-git-template # The source of the .md files. Defaults to the current repository.
       # CUSTOM_DOMAIN: true # Ensures basePath is not modified in the nextjs project. Only enable if you are using a custom github pages domain.
