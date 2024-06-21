@@ -16,9 +16,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <title>{title}</title>
       <div className="text-xs text-muted w-full text-right">
         <Link
-          href={`https://github.com/${
-            process.env.POSTS_REPO ?? process.env.GITHUB_REPOSITORY
-          }/commits/${process.env.GITHUB_REF_NAME ?? "main"}/${path}`}
+          href={
+            process.env.GIT_REF
+              ? `https://github.com/${process.env.POSTS_REPO}/commits/${
+                  process.env.GIT_REF ?? "main"
+                }/${path}`
+              : "#"
+          }
         >
           📅 {created_at.toDateString()}
           {created_at != updated_at && "*"}
