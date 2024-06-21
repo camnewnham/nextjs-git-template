@@ -65,11 +65,11 @@ export function Pagination({
   if (!isLast) cells.push(<Cell link={`${baseUrl}${current + 1}`}>Next</Cell>);
 
   return (
-    <Table>
+    <div className="divide-x divide-default rounded-lg border-2 border-default">
       {cells.map((cell, i) => (
         <Fragment key={i}>{cell}</Fragment>
       ))}
-    </Table>
+    </div>
   );
 }
 
@@ -82,28 +82,21 @@ function Cell({
 }) {
   const disabled = link == null;
   return (
-    <td className="min-w-8 align-middle text-center inline-grid">
+    <div
+      className={`first:rounded-l-md last:rounded-r-md min-w-8 align-middle text-center inline-grid ${
+        disabled ? "bg-neutral-muted" : "hover:bg-muted"
+      }`}
+    >
       <Link
         href={link ?? "#"}
         className={`p-2
-        ${disabled ? "pointer-events-none" : ""} ${!link && "font-bold"}
+        ${disabled ? "pointer-events-none" : ""}
         `}
         aria-disabled={disabled}
         tabIndex={disabled ? -1 : undefined}
       >
         {children}
       </Link>
-    </td>
-  );
-}
-
-function Table({ children }: { children: React.ReactNode[] }) {
-  // Render each child in a table cell
-  return (
-    <table className="border-black">
-      <tbody>
-        <tr>{children}</tr>
-      </tbody>
-    </table>
+    </div>
   );
 }

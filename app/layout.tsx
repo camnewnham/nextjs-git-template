@@ -30,8 +30,8 @@ export default function RootLayout({
 
 function Header() {
   return (
-    <div className="w-full bg-muted p-4 sm:p-8">
-      <div className="text-1xl sm:text-3xl ">
+    <div className="w-full bg-muted p-4 sm:p-6">
+      <div className="text-1xl sm:text-2xl font-extrabold">
         <Link href="/">{process.env.SITE_TITLE ?? "env.SITE_TITLE"}</Link>
       </div>
     </div>
