@@ -131,14 +131,11 @@ async function processMarkdown(content: string) {
     .use(rehypeSlug)
     .use(rehypeToc)
     .use(rehypeAutolinkHeadings, {
-      behavior: "wrap",
-      properties: {
+      behavior: "prepend",
+      headingProperties: {
         class: "anchor-heading",
       },
-      content: (element) => [
-        h(".anchor-link", `🔗`),
-        h(".anchor-title", element.children),
-      ],
+      content: h(".anchor-link", `🔗`),
     })
     .use(rehypeReact, require("react/jsx-runtime"))
     .process(content);

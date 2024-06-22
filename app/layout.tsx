@@ -20,7 +20,9 @@ export default function RootLayout({
         className={`${inter.className} flex flex-col items-center bg-default text-default min-h-screen`}
       >
         <Header />
-        <div id="main">{children}</div>
+        <div id="main" className="w-full">
+          {children}
+        </div>
       </body>
     </html>
   );
@@ -28,7 +30,7 @@ export default function RootLayout({
 
 function Header() {
   return (
-    <div className="w-full bg-muted p-4 sm:p-6">
+    <div className="w-full bg-muted p-4 sm:p-6 border-b-[1px] border-default">
       <div className="text-1xl sm:text-2xl font-extrabold">
         <Link href="/">{process.env.SITE_TITLE ?? "env.SITE_TITLE"}</Link>
       </div>

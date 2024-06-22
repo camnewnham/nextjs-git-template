@@ -3,27 +3,25 @@
 @import url("./github.css") screen and (prefers-color-scheme: light);
 
 .markdown-body .anchor-heading {
-  display: block;
   position: relative;
-  color: inherit;
-  &:hover {
-    text-decoration: inherit;
-  }
 }
 
 .markdown-body .anchor-link {
   position: absolute;
-  width: 64px;
-  left: -64px;
-  text-align: right;
+  width: 28px;
+  left: -28px;
+  height: calc(100%);
   padding-right: 8px;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: medium;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
 }
 
 .markdown-body .anchor-heading:hover .anchor-link {
   visibility: visible;
-  opacity: 0.5;
+  opacity: 1;
 }

@@ -6,13 +6,7 @@ import { useEffect, useState } from "react";
 export function TableOfContents({ headings }: { headings: TocElement[] }) {
   if (!headings || headings.length === 0) return null;
 
-  return (
-    <div className="sticky top-4">
-      {headings?.map((item) => (
-        <TocItem key={item.id} item={item} />
-      ))}
-    </div>
-  );
+  return headings?.map((item) => <TocItem key={item.id} item={item} />);
 }
 
 function TocItem({ item }: { item: TocElement }) {
@@ -32,8 +26,32 @@ function TocItem({ item }: { item: TocElement }) {
     return () => observer.disconnect();
   }, [id]);
 
+  // Choose tailwind class based on the rank
+  let padding = "pl-0";
+  switch (rank) {
+    case 2:
+      padding = "pl-2";
+      break;
+    case 3:
+      padding = "pl-4";
+      break;
+    case 4:
+      padding = "pl-6";
+      break;
+    case 5:
+      padding = "pl-8";
+      break;
+    case 6:
+      padding = "pl-10";
+      break;
+  }
+
   return (
-    <div className={`${inView && "font-bold"} pl-${(rank - 1) * 2}`}>
+    <div
+      className={`text-sm text-muted hover:text-default ${
+        inView && "font-bold"
+      } ${padding}`}
+    >
       <Link href={`#${item.id}`}>{item.title}</Link>
     </div>
   );
