@@ -48,8 +48,8 @@ function TocItem({ item }: { item: TocElement }) {
 
   return (
     <div
-      className={`text-sm text-muted hover:text-default ${
-        inView && "font-bold"
+      className={`text-sm whitespace-nowrap text-nowrap overflow-ellipsis overflow-x-hidden ${
+        inView ? "text-default" : "text-muted"
       } ${padding}`}
     >
       <Link href={`#${item.id}`}>{item.title}</Link>
