@@ -38,9 +38,9 @@ function PostInfoPanel({ post }: { post: Post }) {
       <div className="text-xs text-muted w-full flex flex-col space-y-2 mb-4">
         <span>🕓 {Math.ceil(post.wordCount / 200)} minute read</span>
         <span>📅 Published {created_at.toDateString()}</span>
-        {updated_at != created_at && (
-          <Link href={gitHistoryUrl}>
-            🔗 Edited {updated_at.toDateString()}
+        {updated_at.getTime() != created_at.getTime() && (
+          <Link href={gitHistoryUrl} target="_blank">
+            🔗 Edited {updated_at.toDateString()} ↗
           </Link>
         )}
       </div>
