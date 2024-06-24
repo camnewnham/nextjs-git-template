@@ -10,16 +10,21 @@ export async function generateStaticParams() {
 export default async function Page({ params }: { params: { slug: string } }) {
   const post = (await getPosts()).find((post) => post.slug === params.slug)!;
 
-  const { title, children } = post;
+  const { title, children, githubDiscussionsUrl } = post;
 
   return (
     <>
       <title>{title}</title>
       <div className="flex flex-col-reverse lg:content-center lg:flex-row lg:space-x-8">
         <div id="spacer" className="flex-grow flex-shrink " />
-        <article className="markdown-body flex-grow-1 min-w-0 max-w-[800px]">
-          {children}
-        </article>
+        <div className="flex-grow-1 min-w-0 max-w-[800px]">
+          <article className="markdown-body">{children}</article>
+          <Link href={githubDiscussionsUrl} target="_blank">
+            <button className="text-sm bg-muted mt-8 border-[1px] border-muted rounded-lg p-2 hover:bg-neutral-muted">
+              Discuss this article on GitHub ↗
+            </button>
+          </Link>
+        </div>
         <PostInfoPanel post={post} />
       </div>
     </>
@@ -27,7 +32,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 }
 
 function PostInfoPanel({ post }: { post: Post }) {
-  const { created_at, updated_at, gitHistoryUrl } = post;
+  const { created_at, updated_at, githubHistoryUrl: gitHistoryUrl } = post;
   return (
     <aside className="flex-grow flex-shrink min-w-[250px]">
       <div className="text-xs text-muted w-full flex flex-col space-y-2 mb-4">

@@ -33,19 +33,22 @@ export type Post = {
   created_at: Date;
   updated_at: Date;
   wordCount: number;
-  gitHistoryUrl: string;
+  githubHistoryUrl: string;
+  githubDiscussionsUrl: string;
   headings: TocElement[];
 };
 
 const POSTS_DIRECTORY = process.env.POSTS_DIRECTORY ?? ".posts";
+
 const GIT_BRANCH = child_process
   .execSync(`cd ${POSTS_DIRECTORY} && git rev-parse --abbrev-ref HEAD`)
   .toString()
   .trim();
 
-if (!process.env.POSTS_DIRECTORY) {
-  console.warn("Using default posts path: " + POSTS_DIRECTORY);
-}
+const GIT_REMOTE = child_process
+  .execSync(`cd ${POSTS_DIRECTORY} && git config --get remote.origin.url`)
+  .toString()
+  .trim();
 
 const files = fs.readdirSync(POSTS_DIRECTORY, {
   recursive: true,
@@ -64,9 +67,10 @@ const getPostsPromise = Promise.all(
       const raw = fs.readFileSync(filePath, "utf-8");
       const processed = await processMarkdown(raw);
 
+      const { frontmatter, meta, headings } = processed.data;
+
       const title =
-        //@ts-ignore
-        processed.data.frontmatter?.title || // Frontmatter
+        (frontmatter as Record<string, string> | undefined)?.title || // Frontmatter
         raw.match(/^#\s(.*)$/m)?.[1] || // First h1
         file.replace(/.md$/, ""); // File name
 
@@ -77,14 +81,19 @@ const getPostsPromise = Promise.all(
 
       return {
         file: relativePath,
-        gitHistoryUrl: `https://github.com/${process.env.POSTS_REPO}/commits/${GIT_BRANCH}/${relativePath}`,
+        githubHistoryUrl: `${GIT_REMOTE}/commits/${
+          GIT_BRANCH ?? "main"
+        }/${relativePath}`,
+        githubDiscussionsUrl: `${GIT_REMOTE}/discussions/new?category=general&labels=question&title=${encodeURIComponent(
+          `Comment on \"${title}\"`
+        )}`,
         title,
         slug,
         index,
         children: processed.result,
         wordCount: raw.trim().split(/\s+/).length,
-        description: processed.data.meta?.description ?? "No description.",
-        headings: (processed.data.headings ?? []) as TocElement[],
+        description: meta?.description ?? "No description.",
+        headings: (headings ?? []) as TocElement[],
         ...getGitProperties(filePath),
       } satisfies Post;
     })
