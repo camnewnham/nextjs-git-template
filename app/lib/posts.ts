@@ -14,6 +14,7 @@ import remarkParseFrontmatter from "remark-parse-frontmatter";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { h } from "hastscript";
 import rehypeToc, { TocElement } from "./rehypeToc";
+import GithubSlugger from "github-slugger";
 
 export const PostsPerPage = process.env.POSTS_PER_PAGE
   ? parseInt(process.env.POSTS_PER_PAGE)
@@ -27,7 +28,6 @@ export type Post = {
   file: string;
   title: string;
   slug: string;
-  index: number;
   children: React.ReactNode;
   description: string;
   created_at: Date;
@@ -58,7 +58,7 @@ const files = fs.readdirSync(POSTS_DIRECTORY, {
 const getPostsPromise = Promise.all(
   files
     .filter((file) => file.includes(".md"))
-    .map(async (file, index) => {
+    .map(async (file) => {
       // Use git to get the last modified date of the file
       const filePath = path.resolve(POSTS_DIRECTORY, file);
 
@@ -89,17 +89,26 @@ const getPostsPromise = Promise.all(
         )}`,
         title,
         slug,
-        index,
         children: processed.result,
         wordCount: raw.trim().split(/\s+/).length,
         description: meta?.description ?? "No description.",
         headings: (headings ?? []) as TocElement[],
         ...getGitProperties(filePath),
-      } satisfies Post;
+      };
     })
-).then((posts) =>
-  posts.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())
-);
+).then((posts) => {
+  const slugger = new GithubSlugger();
+  // Sort oldest to newest for generating slugs
+  posts = posts.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
+
+  posts.forEach((post) => {
+    post.slug = slugger.slug(post.title);
+  });
+
+  // Sort newest to oldest for display
+  posts = posts.reverse();
+  return posts satisfies Post[];
+});
 
 function getGitProperties(file: string) {
   const stdout = child_process

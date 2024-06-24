@@ -10,6 +10,7 @@
     "serve": "npx serve out"
   },
   "dependencies": {
+    "github-slugger": "^2.0.0",
     "hast-util-excerpt": "^2.0.0",
     "hast-util-heading-rank": "^3.0.0",
     "hast-util-to-string": "^3.0.0",
