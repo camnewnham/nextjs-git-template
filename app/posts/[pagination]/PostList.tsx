@@ -18,7 +18,7 @@ export async function PaginatedPosts({ pageNumber }: { pageNumber: number }) {
     <>
       <div className="divide-y divide-default">
         {pagePosts.map((post) => (
-          <Exerpt key={post.index} post={post} />
+          <Exerpt key={post.slug} post={post} />
         ))}
       </div>
       <div className="w-full flex justify-center p-4 mt-12">
