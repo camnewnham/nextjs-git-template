@@ -21,7 +21,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <article className="markdown-body">{children}</article>
           <Link href={githubDiscussionsUrl} target="_blank">
             <button className="text-sm bg-muted mt-8 border-[1px] border-muted rounded-lg p-2 hover:bg-neutral-muted">
-              Discuss this article on GitHub ↗
+              Discuss this post ↗
             </button>
           </Link>
         </div>
