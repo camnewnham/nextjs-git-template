@@ -4,7 +4,7 @@
 
 A template that allows you to create a repository of Markdown (.md) files, and turn them into a static site.
 
-For example, it turns [these notes](https://github.com/camnewnham/notes) into [this page](https://camnewnham.com)
+For example, it turns [these posts](/.posts) into [this page](https://camnewnham.github.io/nextjs-git-template)
 
 Designed for hosting on GitHub Actions and developed with NextJS.
 
@@ -18,9 +18,9 @@ Preview is available here: https://camnewnham.github.io/nextjs-git-template/
 2. Configure your repository to [use github actions as a publishing source](https://docs.github.com/en/enterprise-server@3.12/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 3. Create a new action and copy the [workflow file](/.github/workflows/nextjs.yml). Customize the environment variables:
 
-- `CUSTOM_DOMAIN` Enable if you are using a custom domain.
+- `CUSTOM_DOMAIN` Enable if you are using a custom domain. This disables the automatic configuration of the basePath parameter for github pages.
 - `TEMPLATE_REPO` Should be `camnewnham/nextjs-git-template`, or a fork if you are customizing this template.
-- `POSTS_REPO` Should be commented out.
+- `POSTS_REPO` Should be commented out, unless you want to pull your posts from a different repo.
 
 Your files will automatically deploy!
 
