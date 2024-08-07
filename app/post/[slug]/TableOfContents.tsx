@@ -6,25 +6,67 @@ import { useEffect, useState } from "react";
 export function TableOfContents({ headings }: { headings: TocElement[] }) {
   if (!headings || headings.length === 0) return null;
 
-  return headings?.map((item) => <TocItem key={item.id} item={item} />);
+  const [anchorInView, setAnchorInView] = useState<string>();
+
+  return (
+    <>
+      <HeadingObserver
+        headings={headings.flatMap((h) => h.id)}
+        onChange={setAnchorInView}
+      />
+      {headings?.map((item) => (
+        <TocItem key={item.id} item={item} inView={anchorInView == item.id} />
+      ))}
+    </>
+  );
 }
 
-function TocItem({ item }: { item: TocElement }) {
-  const { id, rank } = item;
-  const [inView, setInView] = useState<boolean>(false);
-
+function HeadingObserver({
+  headings,
+  onChange,
+}: {
+  headings: string[];
+  onChange: (id: string) => void;
+}) {
   useEffect(() => {
+    const markdown = document.getElementsByClassName("markdown-body")[0];
+
+    // Create a map of element -> section
+    const sections: Map<Element, string> = new Map();
+    let currentAnchor: string | undefined = undefined;
+    for (let child of Array.from(markdown.children)) {
+      if (headings.includes(child.id)) {
+        currentAnchor = child.id;
+      }
+      if (currentAnchor != null) {
+        sections.set(child, currentAnchor);
+      }
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setInView(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          const hit = sections.get(entry.target);
+          if (hit) {
+            onChange(hit);
+          }
+        }
       },
       {
-        rootMargin: "0px 0px 0px 0px",
+        rootMargin: "0px 0px -50% 0px",
+        threshold: 0,
       }
     );
-    observer.observe(document.getElementById(id)!);
+    sections.forEach((_, element) => {
+      observer.observe(element);
+    });
+
     return () => observer.disconnect();
-  }, [id]);
+  }, [headings]);
+  return null;
+}
+
+function TocItem({ item, inView }: { item: TocElement; inView?: boolean }) {
+  const { id, rank } = item;
 
   // Choose tailwind class based on the rank
   let padding = "pl-0";
