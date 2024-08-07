@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export function TableOfContents({ headings }: { headings: TocElement[] }) {
-  if (!headings || headings.length === 0) return null;
-
   const [anchorInView, setAnchorInView] = useState<string>();
+
+  if (!headings || headings.length === 0) return null;
 
   return (
     <>
