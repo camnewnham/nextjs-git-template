@@ -61,7 +61,7 @@ function HeadingObserver({
     });
 
     return () => observer.disconnect();
-  }, [headings]);
+  }, [headings, onChange]);
   return null;
 }
 
