@@ -1,6 +1,6 @@
 import { PaginatedPosts } from "./posts/[pagination]/PostList";
 
-import PostsLayout from "./posts/[pagination]/layout";
+import PostsLayout from "./posts/layout";
 
 export default function Home() {
   if (process.env.UNDER_CONSTRUCTION) {
